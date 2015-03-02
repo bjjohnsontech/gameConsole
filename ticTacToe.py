@@ -93,14 +93,11 @@ class ttt():
         # I move first, play top left
         '''if first:
             move = 1
-        # I move second, play center unless already played then top left
-        elif len(self.played) == 1:
-            print self.played
-            if self.played == [5]:
-                move = 1
-            else:
+        # I move second, play center unless already played then top left'''
+        if len(self.played) == 1:
+            if self.played != [5]:
                 move = 5
-        else: # not first or second, find rows with 2 Xs or Os'''
+        #else: # not first or second, find rows with 2 Xs or Os
         for line in self.lines:
             if len(line) == 2: # there are 2 of something in this line
                 if len(set(line) - x - o) != 0: # there's an empty square
@@ -113,16 +110,19 @@ class ttt():
             elif len(line) == 3 and len(line - o) == 3 and len(line-x) == 2: #just X and two open
                 for entry in line-x:
                     preferNext.append(int(entry))
+        if (len(self.played) == 3
+        and self.board[4] == 'X'
+        and ((self.board[0] == 'O' and self.board[8] == 'O')
+            or (self.board[2] == 'O' and self.board[6] == 'O'))):
+            preferNext.extend([2,4,6,8])
         if preferNext:
             prefer = [x for x in preferNext if preferNext.count(x) > 1]
-            print preferNext
         if toWin:
             move = toWin
         elif toBlock:
             move = toBlock
         while move is None and prefer:
             r = randint(0, len(prefer)-1)
-            print self.board[prefer[r]-1], str(prefer[r])
             if self.board[prefer[r]-1] == str(prefer[r]):
                 move = prefer[r]
             prefer.remove(prefer[r])
